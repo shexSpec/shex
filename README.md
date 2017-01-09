@@ -1,4 +1,4 @@
-= Shape Expressions (ShEx) Project
+# Shape Expressions (ShEx) Project
 
 This repository is for Shape Expressions management. 
 
