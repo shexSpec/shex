@@ -65,7 +65,7 @@ This inclusion has an additional `;` operator which explicitly creates and `Each
 }
 ```
 # Issue - `AND` vs. `EachOf`
-
+## `AND`
 One way to define inclusion would be to treat it as a `ShapeAnd`:
 
 ```
@@ -162,6 +162,40 @@ or
   :component { :code .; :value . }*;
 }
 ```
+
+## Discussion
+The fundamental problem with `AND` semantics lies with repeats. A shape is extensible unless it is explicitly declared as closed. A
+specific predicate, however, is "closed" unless it is declared as "open" through one of the approaches described above.  In any case,
+we **can** get the desired behavior today -- CLOSED vs. default (i.e. not CLOSED) for new predicates and max-cardinality \< * for 
+"closed" attributes that already exist vs. '+' or '\*' for 'open' attributes.
+
+I don't object to an operation that violates the above rules -- something that says that instances of a "child" shape may *not* be valid
+instances of the "parent", but this has to be crystal clear... we need to remember that ShEx was designed to be used as documentation, 
+and, as such, (useful) extensions that have unexpected side effects such as re-opening a CLOSED shape or changing the cardinality or
+or possible values for an attribute need to be crystal clear as to what they are doing.
+
+Take:
+```
+<BP> CLOSED {
+    :component { :code ["systolic", "diastolic"] ; value xsd:decimal }{1, 2};
+}
+<ViolatedBP> &<BP> {
+    :component { :code ["systolic", "posture"]; value xsd:string } {3};
+}
+```
+Being able to do the above might be handy for ShEx programmers, but anyone who reads that as all instances of \<ViolatedBP> 
+are also instances of
+\<BP> will be in for a rude surprise. I would expect:
+```
+<RestrictedBP> &<BP> {
+    :component { :code ["systolic"] }{1};
+}
+```
+To act as a constraint -- this may be a tall order, however.
+
+
+
+
 
 
     
