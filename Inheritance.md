@@ -1,4 +1,4 @@
-= Introduction =
+# Introduction
 
 The [FancyShExDemo inheritance example](https://www.w3.org/2013/ShEx/FancyShExDemo.html?schemaURL=test/Issue-inheritance/schema.shex&dataURL=test/Issue-inheritance/pass-user-employee.ttl&colorize=true) has a base shape called `<Person>`:
 ```
@@ -35,6 +35,7 @@ This entails two behaviors:
 The first can also be accomplished by creating a triple expression (TE):
 ```
 <PersonTripleExpressionHolder> {
+
   $<PersonTE>
     (  foaf:name xsd:string
      | foaf:givenName xsd:string+,
@@ -58,4 +59,61 @@ This inclusion has an additional `;` operator which explicitly creates and `Each
   ex:representative @<EmployeeShape>
 }
 ```
-= Issue - AND vs. EachOf =
+# Issue - `AND` vs. `EachOf`
+
+One way to define inclusion would be to treat it as a `ShapeAnd`:
+
+```
+<UserShape> {
+    (  foaf:name xsd:string
+     | foaf:givenName xsd:string+,
+       foaf:familyName xsd:string),
+    foaf:mbox IRI
+} AND {
+  ex:representative @<EmployeeShape>
+}
+```
+This works so long as the including shape is not CLOSED and there are no repeated properties shared between any included shape and the including shape.
+A closed shape would fail because any canidate node would have more than e.g. `ex:representative`:
+```
+<UserShape> {
+    (  foaf:name xsd:string
+     | foaf:givenName xsd:string+,
+       foaf:familyName xsd:string),
+    foaf:mbox IRI
+} AND CLOSED {
+  ex:representative @<EmployeeShape>
+}
+```
+Likewise, a repeated property:
+```
+<BP> {
+  :component { :code [ "systolic" ] ; :value . };
+  :component { :code [ "diastolic" ] ; :value . };
+}
+```
+could be extended with additional required triples:
+```
+<PosturedBP> &<BP> {
+  :component { :code [ "posture" ] ; :value . };
+}
+```
+An `AND` semantics would fail because the constraints on `:component` are incompatible between the two ANDed shapes.
+Treating this as an inclusion bypasses this issue as it creates a single TE:
+```
+<PosturedBP> {
+ (
+  :component { :code [ "systolic" ] ; :value . };
+  :component { :code [ "diastolic" ] ; :value . }
+ );
+  :component { :code [ "posture" ] ; :value . };
+}
+```
+This means that a node which conformed to a derived shape, e.g. `<PosturedBP>`:
+```
+<s>
+  :component [ :code "systolic" ; :value 110^^xsd:float };
+  :component [ :code "diastolic" ; :value 80^^xsd:float ];
+  :component [ :code "posture" ; :value "supone" ].
+```
+would not conform to a base shape `<BP>` which accepts only two `:components`.
