@@ -140,7 +140,7 @@ HS -- This is desired behavior from my perspective, at least for one interpretat
 Would be that every "instance" that satisfies S2 also satisfies S1 -- the set of graphs that satisfy S2 are a subset of
 the set of graphs that satisfy S1.
 
-In the above example, someone has gone to the trouble of asserting that <PosturedBP> has exactly two components.  As it is not closed, 
+In the above example, someone has gone to the trouble of asserting that \<PosturedBP> has exactly two components.  As it is not closed, 
 it may have a bunch of other stuff as well, but only 2 components. If you wanted to open this up, you could say:
 ```
 <BunchOfComponents> {
@@ -152,6 +152,14 @@ it may have a bunch of other stuff as well, but only 2 components. If you wanted
 }
 <PosturedBP> &<BP> {
   :component { :code [ "posture" ] ; :value . };
+}
+```
+or
+```
+<BP> {
+  :component { :code [ "systolic" ] ; :value . };
+  :component { :code [ "diastolic" ] ; :value . };
+  :component { :code .; :value . }*;
 }
 ```
 
