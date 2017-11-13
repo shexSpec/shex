@@ -86,14 +86,19 @@ A closed shape would fail because any candidate node would have more than e.g. `
   ex:representative @<EmployeeShape>
 }
 ```
-HS -- the above example is a bit difficult to understand.  How about:
+
+![](https://placehold.it/350x40/fff/070?text=<HS>)
+
+The above example is a bit difficult to understand.  How about:
 ```
 <LonelyBox> CLOSED {foaf:name xsd:string, foaf:mbox IRI}
 <ExtendedLonelyBox> &<LonelyBox> {ex:shoesize xsd:decimal}
 ```
 A ShEx interpreter worth its salt would be able to identify the above as an error -- the set of possible graphs that could satisfy 
 <ExtendedLonelyBox> is empty.  Same thing as the previous example, however.
-    
+
+![](https://placehold.it/350x40/fff/070?text=</HS>)
+
 Likewise, a repeated property:
 ```
 <BP> {
@@ -130,7 +135,9 @@ This means that a node which conformed to a derived shape, e.g. `<PosturedBP>`:
 ```
 would not conform to a base shape `<BP>` which accepts only two `:components`.
 
-HS -- This is desired behavior from my perspective, at least for one interpretation of "inherits".  A useful interpretation of:
+![](https://placehold.it/350x40/fff/070?text=<HS>)
+
+This is desired behavior from my perspective, at least for one interpretation of "inherits".  A useful interpretation of:
 
 ```
 <S2> &<S1> { ... }
@@ -191,6 +198,7 @@ are also instances of
 ```
 To act as a constraint -- this may be a tall order, however.
 
+![](https://placehold.it/350x40/fff/070?text=</HS>)
 
 
 
