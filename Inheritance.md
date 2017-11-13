@@ -13,15 +13,10 @@ which is extended by `<User>`:
 ```
 <UserShape> &<PersonShape> { ex:representative @<EmployeeShape> }
 ```
-and indirectly by `<Employee>`:
+and by `<Employee>` (which also extends a `<RepShape>`):
 ```
 ABSTRACT <RepShape> { foaf:phone IRI+ }
 <EmployeeShape> &<PersonShape> &<RepShape> { }
-```
-HS --> Why do you call this "indirect" -- I would have thought that indirect would have been:
-```
-<RepShape> &<PersonShape> { ex:representative @<EmployeeShape> }
-<EmployeeShape> &<RepShape> {}
 ```
 A node being tested against `@<PersonShape>`:
 ```
