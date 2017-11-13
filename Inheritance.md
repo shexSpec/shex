@@ -59,8 +59,8 @@ This inclusion has an additional `;` operator which explicitly creates and `Each
   ex:representative @<EmployeeShape>
 }
 ```
-# Issue - `AND` vs. `EachOf`
-## `AND`
+# Issue - `ShapeAnd` vs. `EachOf`
+## `ShapeAnd`
 One way to define inclusion would be to treat it as a `ShapeAnd`:
 
 ```
@@ -98,7 +98,7 @@ Likewise, a repeated property:
 ```
 <BP> {
   :component { :code [ "systolic" ] ; :value . };
-  :component { :code [ "diastolic" ] ; :value . };
+  :component { :code [ "diastolic" ] ; :value . }
 }
 ```
 could be extended with additional required triples:
@@ -108,7 +108,10 @@ could be extended with additional required triples:
 }
 ```
 An `AND` semantics would fail because the constraints on `:component` are incompatible between the two ANDed shapes.
-Treating this as an inclusion bypasses this issue as it creates a single TE:
+
+## `EachOf`
+
+Treating this as an inclusion bypasses this issue as it creates an `EachOf` TE:
 ```
 <PosturedBP> {
  (
@@ -123,7 +126,7 @@ This means that a node which conformed to a derived shape, e.g. `<PosturedBP>`:
 <s>
   :component [ :code "systolic" ; :value 110^^xsd:float };
   :component [ :code "diastolic" ; :value 80^^xsd:float ];
-  :component [ :code "posture" ; :value "supone" ].
+  :component [ :code "posture" ; :value "supine" ].
 ```
 would not conform to a base shape `<BP>` which accepts only two `:components`.
 
