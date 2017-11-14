@@ -128,12 +128,52 @@ Treating this as an inclusion bypasses this issue as it creates an `EachOf` TE:
 ```
 This means that a node which conformed to a derived shape, e.g. `<PosturedBP>`:
 ```
-<s>
+<myPostureBP>
   :component [ :code "systolic" ; :value 110^^xsd:float };
   :component [ :code "diastolic" ; :value 80^^xsd:float ];
   :component [ :code "posture" ; :value "supine" ].
 ```
 would not conform to a base shape `<BP>` which accepts only two `:components`.
+
+## FHIR Slicing Use Case
+
+The FHIR schema language calls repeatable properties `slicing`.
+These can be open or closed, though they are commonly open.
+For example, a `<BP>` would be open, allowing more "slices" on the `:component` property.
+The closed one can be expressed as above in ShEx; the open one can be expressed by adding an `EXTRA :coomponent` to permit more slices on the property `:component`.
+An open `<BP>`:
+```
+<BP> {
+  :component { :code [ "systolic" ] ; :value . };
+  :component { :code [ "diastolic" ] ; :value . }
+}
+```
+would accept the above instance of `<PostureBP>` (`<myPostureBP>`) as `:component` would be open.
+
+## Two Inheritance Operators
+
+XML Schema offers separate operators for [extension](https://www.w3.org/TR/xmlschema-1/#cos-ct-extends) and [restriction](https://www.w3.org/TR/xmlschema-1/#derivation-ok-restriction).
+Taking `-` for restriction and `+` for extension, would could have a base shape define generic constraints on `:components`, a derived shape define their usage for a particular kind of observation, and a further derivation augment that usage:
+
+```
+<ObservationShape> {
+  …
+  :component {
+    :code . ;
+    :value .
+  } *
+}
+<BP> -<ObservationShape> {
+  …
+  :component { :code [ "systolic" ] ; :value . };
+  :component { :code [ "diastolic" ] ; :value . }
+}
+<PosturedBP> +<BP> {
+  :component { :code [ "posture" ] ; :value . };
+}
+```
+Note that the `…`s here include many properties.
+
 
 ![](https://placehold.it/350x40/fec/070?text=<HS>)
 
