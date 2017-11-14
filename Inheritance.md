@@ -153,7 +153,7 @@ would accept the above instance of `<PostureBP>` (`<myPostureBP>`) as `:componen
 ## Two Inheritance Operators
 
 XML Schema offers separate operators for [extension](https://www.w3.org/TR/xmlschema-1/#cos-ct-extends) and [restriction](https://www.w3.org/TR/xmlschema-1/#derivation-ok-restriction).
-Taking `-` for restriction and `+` for extension, would could have a base shape define generic constraints on `:components`, a derived shape define their usage for a particular kind of observation, and a further derivation augment that usage:
+Taking `-` for restriction and `+` for extension, we could have a base shape define generic constraints on `:components`, a derived shape define their usage for a particular kind of observation, and a further derivation augment that usage:
 
 ```
 <ObservationShape> {
