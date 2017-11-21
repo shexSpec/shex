@@ -172,8 +172,65 @@ Taking `-` for restriction and `+` for extension, we could have a base shape def
   :component { :code [ "posture" ] ; :value . };
 }
 ```
-Note that the `…`s here include many properties.
+Note that the `…`s here include many properties. Taking the `…` as `:p1 .` for simplicity, the semantics of `<BP>` are the same as:
+```
+<BP> {
+  :p1 .;
+  :component {
+    :code . ;
+    :value .
+  } *
+} AND {
+  :p1 .;
+  :component { :code [ "systolic" ] ; :value . };
+  :component { :code [ "diastolic" ] ; :value . }
+}
+```
+`<PosturedBP>` inherits the `-<ObservationShape>` from `<BP>` and extends `<BP>'s` triple expression:
+```
+<PosturedBP> {
+  :p1 .;
+  :component {
+    :code . ;
+    :value .
+  } *
+} AND {
+  (
+  :p1 .;
+  :component { :code [ "systolic" ] ; :value . };
+  :component { :code [ "diastolic" ] ; :value . }
+  );
+  :component { :code [ "posture" ] ; :value . };
+}
+```
+The last expression is an `EachOf` of `<BP>'s` expression and the triple expresion in the `<PostureBP>` declaration and is equivalent to:
+```
+  :p1 .;
+  :component { :code [ "systolic" ] ; :value . };
+  :component { :code [ "diastolic" ] ; :value . };
+  :component { :code [ "posture" ] ; :value . };
+```
+This appears to be the desired behavior for extension.
 
+## Peering into a shape's expression
+
+It seems like a funny heuristic to have extension operate on a label'd shape expression's triple expression.
+In addition to a `Shape`, a labeled shape expression could be a `ShapeOr` | `ShapeAnd` | `ShapeNot` | `NodeConstraint` | `ShapeExternal`. We could say for now that it's only defined for `Shape`, add `ShapeAnd` of `Shapes` and `NodeConstraints` later, and indefinitely postpone defining extension and restriction of any of `ShapeOr`, `ShapeNot` and `ShapeExternal` until we trip across and informative use case.
+
+## Surface Syntax
+
+We have a few logical choices about how to express inheritance and extension:
+
+extend | restrict | argument
+--- | --- | ---
+`&` | `-` | `&` consistent with inclusion, `-` seems like restriction
+`-` | `+` | `+` implies AND
+`+` | `-` | `+` implies plus, i.e. "plus this expression"
+`&+` | `&-` | `&` is a consistent inheritance operator (except when it's used for inclusion)
+
+We could try to predict and leave room for future directions of the language. An extension operator for `ShapeNot` seems quite inconsistent with how most languages treat extension. OR seems harder to predict.
+
+## possibly out of date comments from Harold
 
 ![](https://placehold.it/350x40/fec/070?text=<HS>)
 
