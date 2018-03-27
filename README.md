@@ -4,7 +4,8 @@
 
 This repository is for Shape Expressions management. 
 
-It contains links to: 
+It contains links to:
+- [Gitter chat](https://gitter.im/shapeExpressions/Lobby)
 - [issues list](https://github.com/shexSpec/shex/issues) ([2.0 release](https://github.com/shexSpec/shex/issues?q=is%3Aopen+is%3Aissue+milestone%3A2.0))
 - [spec](https://shexspec.github.io/spec) ([repository](https://github.com/shexSpec/spec))
 - [test suite](https://github.com/shexSpec/shexTest) ([implementation reports](http://shexspec.github.io/shexTest/reports/))
