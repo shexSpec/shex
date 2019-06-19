@@ -9,7 +9,7 @@
 
 *Admin*:
  * Chair: Dimitris
- * Regrets: 
+ * Regrets: Tom
 
 *Next meeting*: July 3rd 2019
 
@@ -18,6 +18,11 @@
 
 * Introductions
 * Community updates
+  * [TimBL discusses ShEx](https://www.w3.org/DesignIssues/Footprints.html)
+* Communication channels
+  * [ShEx CG blog](https://www.w3.org/community/shex) - Eric and Tom posted two announcements there yesterday.  We should use this more frequently.
+  * [@rdfShEx twitter](https://twitter.com/rdfShEx] - we also set up a Twitter feed
+  * [gitter/jupyter channel[(https://gitter.im/shapeExpressions/jupyter) has some interesting discussion
 * Discuss ShEx 2.1 publication
 * [Progress on EXTENDS](https://rawgit.com/shexSpec/primer/extends/index.html#extension)
 * Discuss
