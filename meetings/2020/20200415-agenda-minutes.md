@@ -47,3 +47,7 @@ ericP: +1
 Andra: +1 
 Tom: +1
 Kat: +1
+RESOLVED
+
+Andra: https://www.weso.es/YASHE/ now has autocompletion like Wikidata Query Service.
+Hackathon wrapup https://twitter.com/egonwillighagen/status/1248965119033446403
