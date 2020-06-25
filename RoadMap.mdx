@@ -1,0 +1,20 @@
+# RoadMap
+- ***EXTENDS*** - builds networks of reusable shapes.
+
+- **Error reporting** - unify error reporting between implementations; spec and test to the extent possible.
+
+  This doesn't prescribe what error messages are, just how to report them. For example, Whether
+  ```{ <n1> <p1> 1 }@{ <p1> xsd:float }```
+  reports the wrong dt for `<p1>` or a missing float and unexpected int is implementation-dependent.
+  - **ShExPath** - captures the validation context of a violation. For instance, validating Peron's vehicles as automobiles might result in
+  
+  ```{"path": "<person1>@<#PersonShape>/<hasVehicle>%<bicycle2>@<#CarShape>",
+  "error": "missing <engineNumber> property"}```
+
+- ***API***
+  - [current spec](https://shexspec.github.io/spec/API)
+    - ***status***: draft
+  - ***invocation*** of validators
+  - ***EXTERN shape resolution*** via invocation API.
+  
+  
