@@ -1,6 +1,6 @@
 # Shape Expressions (ShEx)
 
-[![Join the chat at https://gitter.im/shapeExpressions](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/shapeExpressions?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/shapeExpressions](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/shapeExpressions?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![en español: https://gitter.im/shapeExpressions/es](https://badges.gitter.im/shapeExpressions/es.svg)](https://gitter.im/shapeExpressions/es?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 This repository is for Shape Expressions management. 
 
