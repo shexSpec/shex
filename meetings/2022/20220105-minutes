@@ -1,0 +1,120 @@
+# ShEx Telecons
+## Meeting Jan 5, 2022
+### Location:  https://us02web.zoom.us/j/441496948?pwd=OUdBT25vK0NIc2ZER3BnRGVTblIzdz09
+### Chair: ericP
+### Attendees: Jackson, ericP, Kat, Harold, JoseLabra, Tom
+### Scribe: Kat
+
+## Notes
+* ericP: Priorities for features. First: finish extends (needed for Google work)
+* Harold: worth setting up a walkthru
+* ericP: Person interested in helping to maintain PyShEx
+* ericP: 3 implementations of EXTENDS
+* Harold: Is the spec up to date?
+* ericP: Kat worked on a version to cover EXTENDS, status?
+* Kat: branch exists but has not yet been merged: 
+- Spec: https://github.com/shexSpec/spec/tree/extends
+- tests: https://github.com/shexSpec/shexTest/tree/extends
+* ericP: Jackson- do you have need for EXTENDS?
+* Jackson: Yes. 
+* ericP: Discriminators. Way to distill messages. Needed for Google work. Google developed in-house language for supressing error messages that they don't find helpful. Invented discriminators on their own. If we put them in ShEx it could improve our reporting. Implement as annotation first, walk through errors and boil them down to discriminator field. Does that make sense to you Harold?
+* Harold: I need to revisit discriminators. If we use a type arc to id shapes, if the type arc for observation isn't present, (because it's necessariy for conformance) we can stop at that point and other tests are not needed.
+... Type arc is the classic discriminator, but others can be used. Iff the discriminator is met, then check the rest of the shape.
+* ericP: Can you think of any reason this wouldn't work?  If I get a butt-load of errors, can I prune all the ones excluded by a discriminator?
+* Harold: From a performance perspective, if it doesn't meet discriminator- don't even bother with rest. Need a way to quickly prune branches?
+* ericP: We share the same goal. DanBri suggested starting with annotations before rolling it into the language.
+* Harold: it may be more work to get rid of error messages than not generating them in the first place. The first thing we need to know is "Should we be testing this collection of triples against this shape at all?". So I'd like some early trimming criteria.
+* ericP: you're right, I should probably just make my validator implement discriminators.
+* Harold: I am often turning things into SPARQL- in order for us to begin testing it has to be declasred as type X. It would be damned convenient to select things by the discriminant.
+* ... I also don't want it to be a single TripleConstraint.
+* Jose: Is this example valid for what we're talking about as discriminators?
+
+
+* Jose: Example of discriminators?
+
+```shex
+1.
+<Person> Discriminator { a :Person } {
+ :name xsd:string ;
+}
+
+2.
+<PersonAltSyntax> {
+  DISCRIMINATOR {
+    a :Person ;
+    :title ["Sir"]
+  }
+  :name xsd:string ;
+}
+
+3. Using annotations
+
+<Person> EXTENDS <PersonDisc> {
+ :name xsd:string ;
+}
+
+<PersonDisc> {
+ a :Person ;
+ :title ["Sir"]
+} // :discriminatorness 1.0
+
+<issue> {
+  :reportedBy @<Person>
+}
+
+:i1 :reportedBy :p1 .
+:i2 :reportedBy :p2 .
+:p1 a :Car; :name 23 .
+:p2 a :Person; :name 23 .
+```
+* Harold: Could we use classic preconditions/postconditions? Use discriminator as precondition before shape is evaluated. If you don't meet preconditions it is a matter that the shape does not apply.
+* Jose: See line 65-68, when you are validating issues- P1 has type car and doesn't comply with the precondition- is this the same as what you mean by precondition?
+* Harold: Yes, it shouldn't even count as a error, it is just not applicable.
+* ericP: you are going to fail the thing that called it.
+* Harold: It is a different type of fail. 
+* Jose: We could emulate this with annotations, prob is that with annotations, a validator that does not yet support discrimiators it would ignore this part.
+* Harold: Whether it is duplicated or whether 
+* Jose: Line 61 I tried it with an @ to indicate that this is a discriminator, in this way a validator could continue working.
+* ericP: I could just make sure that this works in JS impl
+* Harold: I weakly favor your approach. Way to put in experimental features and have existing parsers ignore?
+* ericP: Might not work with ShExC because you wouldn't know where to pick up.
+* Harold: Could we go from inside out? First implement discriminators in ShExJ and then work it out to the ShExC grammar?
+* ericP: Annotation not comment.
+* Jose: A lot of people look at shapemaps- I don't know if all implementations support shapemaps in the same way, ex. feature of including SPARQL.
+* ericP: 1. partical way to select a bunch of items a validate 2. share state (fixed shapemap). I'd like to see the SPARQL be optional? 2 specs or optional?
+* Jose: Yes, provide options- just like the possibilities with semanticactions. Have aparagrap in spec to discuss exetensions.
+* ericP: Shapemaps are terse and do not have a prefix mechanism. Keyword identifiers. We could create a wikipage that talks about the SPARQL one and set precedent for how to add other extensions to the registry.
+* Jose: Or change to support URIs.
+* ericP: Issue is syntactic cost could be too high for shapemaps?
+* Jose: In current shapemaps there is no way to define prefix declarations
+* ericP: Controversial in the way XPATH is 
+* Jose: we need to declare how to inject prefix decls to shape maps...  
+* ericP: what if I have 2 data soures to merge and they have prefix conflicts? Should just be application dependent.
+* Harold: At least detect and warn. As a rule, prefixes are curiously consistent within a domain. Also want sensible behavior if the prefix isn't there. "Don't do pathological stuff."
+* ericP: Answers to these questions will be app-dependent.
+* Harold: Bioinformatics community treat prefixes as cannonical and URIs as dependents. 
+* Jose: Working on extends and trying to finish draft for shapemaps
+1. EXTENDS
+2. Finish ShapeMaps draft: https://shexspec.github.io/shape-map/
+ - Define/add some test suite
+
+Shape Maps
+
+```
+sparql ```select * where { ?this a :Person }@<User>
+```
+
+```
+<http://shex.io/reg#sparql> ```select * where { ?this a :Person }@<User>
+```
+
+```
+prefix ex: <http://example.org/>
+
+ex:alice@:User
+```
+
+```
+ex:x@x:User
+```
+`ex` coming from data, `x` coming from schema
